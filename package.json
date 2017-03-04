@@ -1,0 +1,15 @@
+{
+  "name": "nestbot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "luisai.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "botbuilder": "^3.7.0"
+  }
+}
