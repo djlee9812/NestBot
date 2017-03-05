@@ -1,5 +1,6 @@
 var builder = require('botbuilder');
 var restify = require('restify');
+var fetch = require('node-fetch');
 
 /*
 // Create bot and bind to console
@@ -9,8 +10,9 @@ var bot = new builder.UniversalBot(connector);
 // Setup Restify Server
 var server = restify.createServer();
 server.listen(process.env.port || process.env.PORT || 3978, function () {
-	console.log('%s listening to %s', server.name, server.url); 
+  console.log('%s listening to %s', server.name, server.url);
 });
+
 
 var connector = new builder.ChatConnector({
 	appId: process.env.APPID,
@@ -29,8 +31,22 @@ var dialog = new builder.IntentDialog({ recognizers: [recognizer] });
 
 bot.dialog('/', dialog);
 
+
+
 dialog.matches('getTemp', function(session) {
-	session.send("The current temperature is ");
+	var temp = fetch('https://developer-api.nest.com', {
+		method: 'GET',
+		headers: {
+			Authorization: 'Bearer c.lpjbhCpE2DqWAE57GsxlgN20pBHF1dpqHiHN2NK5rUyZst1RyE1J2BszWB96HlijxmtIoirasre1pLwRV54QFZE3KPTx8mqY1otsiLJBpykqj51r6eX8Op1HghWworetkufSNigEZGiG0uaX',
+			'Content-Type': 'application/json'
+		}
+	}).then(response => {
+		return response.json();
+	}).then(result => {
+		return result.devices.thermostats['-bz5ciLHlikeWppHKL9LNJZpUW_FpJZE'].ambient_temperature_f;
+	})
+
+	session.send("The current temperature is " + temp);
 });
 
 dialog.matches('setTemp', [
@@ -93,4 +109,3 @@ dialog.matches('setMode', [
 dialog.matches('None', function(session) {
 	session.send("Sorry, I didn't understand \'%s\'. Try again.", session.message.text);
 });
-
