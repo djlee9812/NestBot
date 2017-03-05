@@ -9,7 +9,7 @@ var bot = new builder.UniversalBot(connector);
 // Setup Restify Server
 var server = restify.createServer();
 server.listen(process.env.port || process.env.PORT || 3978, function () {
-  console.log('%s listening to %s', server.name, server.url); 
+  console.log('%s listening to %s', server.name, server.url);
 });
 
 var connector = new builder.ChatConnector({
@@ -53,4 +53,3 @@ dialog.matches('setMode', [
 dialog.matches('None', function(session) {
 	session.send("Sorry, I didn't understand \'%s\'. Try again.", session.message.text);
 });
-
